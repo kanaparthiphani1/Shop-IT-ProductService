@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 public class FakeStoreProductService implements ProductService{
 
@@ -50,28 +52,14 @@ public class FakeStoreProductService implements ProductService{
     @Override
     public List<Product> getAllProducts() {
         ResponseEntity<FakeStoreProductDTO[]> prods = this.rt.getForEntity("https://fakestoreapi.com/products",FakeStoreProductDTO[].class);
-                if(prods.getBody()==null){
-                    return null;
-                }
+        if(prods.getBody()==null){
+            return null;
+        }
 
         List<Product> lis = Arrays.stream(prods.getBody())
-                                .toList()
-                                .stream()
-                                .map(prod->
-                                    {
-                                        Product temp = new Product();
-                                        temp.setId(prod.getId());
-                                        temp.setTitle(prod.getTitle());
-                                        temp.setDescription(prod.getDescription());
-                                        temp.setPrice(prod.getPrice());
-                                        temp.setImageUrl(prod.getImage());
-                                        Category category = new Category();
-                                        category.setTitle(prod.getTitle());
-                                        temp.setCategory(category);
-                                        return temp;
-                                    })
+                                .map(prod-> convertToProduct(prod))
                                 .toList();
-                return lis;
+        return lis;
 
     }
 }
