@@ -1,17 +1,17 @@
-package com.example.sample.services;
+package com.example.sample.services.products;
 
+import com.example.sample.DTO.CreateProductDTO;
 import com.example.sample.DTO.FakeStoreProductDTO;
+import com.example.sample.exception.ProductNotFoundException;
 import com.example.sample.models.Category;
 import com.example.sample.models.Product;
+import com.example.sample.projections.ProductWithCategory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 public class FakeStoreProductService implements ProductService{
@@ -38,7 +38,7 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public Product getProductById(Long id) {
+    public ProductWithCategory getProductById(Long id) {
         ResponseEntity<FakeStoreProductDTO> prod = this.rt.getForEntity(
                 "https://fakestoreapi.com/products/"+id, FakeStoreProductDTO.class);
 
@@ -46,7 +46,7 @@ public class FakeStoreProductService implements ProductService{
             return null;
         }
 
-        return convertToProduct(prod.getBody());
+        return null;
     }
 
     @Override
@@ -61,5 +61,15 @@ public class FakeStoreProductService implements ProductService{
                                 .toList();
         return lis;
 
+    }
+
+    @Override
+    public Product createProduct(CreateProductDTO product) {
+        return null;
+    }
+
+    @Override
+    public Product replaceProduct(Product product) throws ProductNotFoundException {
+        return null;
     }
 }

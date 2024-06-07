@@ -1,0 +1,41 @@
+package com.example.sample.services.category;
+
+import com.example.sample.DTO.CategoryProdDTO;
+import com.example.sample.models.Category;
+import com.example.sample.models.Product;
+import com.example.sample.repository.CategoryRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class CategoryServiceImpl implements CategoryService{
+
+    private  final CategoryRepository categoryRepository;
+
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
+
+    @Override
+    public Category getCategoryById(Long id) {
+        Optional<Category> category = categoryRepository.findById(id);
+        return category.orElse(null);
+    }
+
+    @Override
+    public CategoryProdDTO getCompleteCategoryById(Long id) {
+        Optional<Category> catOpt = categoryRepository.findById(id);
+        CategoryProdDTO prodDTO = new CategoryProdDTO();
+        if(catOpt.isEmpty()){
+            return prodDTO;
+        }
+        prodDTO.setId(catOpt.get().getId());
+        prodDTO.setTitle(catOpt.get().getTitle());
+        List<Product> products = catOpt.get().getProducts();
+//        System.out.println("Products : "+products.t);
+        prodDTO.setProducts(products);
+        return prodDTO;
+    }
+}

@@ -1,11 +1,12 @@
 package com.example.sample.controllers;
 
+import com.example.sample.DTO.CreateProductDTO;
+import com.example.sample.exception.ProductNotFoundException;
 import com.example.sample.models.Product;
-import com.example.sample.services.ProductService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.sample.projections.ProductWithCategory;
+import com.example.sample.services.products.ProductService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,14 +20,26 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @PostMapping()
+    public ResponseEntity<Product> createProduct(@RequestBody CreateProductDTO product) {
+        Product product1 = productService.createProduct(product);
+        return ResponseEntity.ok(product1);
+    }
+
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable("id") Long id) {
+    public ProductWithCategory getProductById(@PathVariable("id") Long id) {
         return this.productService.getProductById(id);
     }
 
     @GetMapping()
     public List<Product> getProducts() {
         return this.productService.getAllProducts();
+    }
+
+    @PutMapping()
+    public ResponseEntity<Product> replaceProduct(@RequestBody Product product) throws ProductNotFoundException {
+        Product newProd = productService.replaceProduct(product);
+        return ResponseEntity.ok(newProd);
     }
 
 
