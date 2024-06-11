@@ -6,6 +6,7 @@ import com.example.sample.exception.ProductNotFoundException;
 import com.example.sample.models.Category;
 import com.example.sample.models.Product;
 import com.example.sample.projections.ProductWithCategory;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -50,18 +51,23 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        ResponseEntity<FakeStoreProductDTO[]> prods = this.rt.getForEntity("https://fakestoreapi.com/products",FakeStoreProductDTO[].class);
-        if(prods.getBody()==null){
-            return null;
-        }
-
-        List<Product> lis = Arrays.stream(prods.getBody())
-                                .map(prod-> convertToProduct(prod))
-                                .toList();
-        return lis;
-
+    public Page<Product> getAllProducts(int pageNum, int pageSize, String dir) {
+        return null;
     }
+
+//    @Override
+//    public List<Product> getAllProducts() {
+//        ResponseEntity<FakeStoreProductDTO[]> prods = this.rt.getForEntity("https://fakestoreapi.com/products",FakeStoreProductDTO[].class);
+//        if(prods.getBody()==null){
+//            return null;
+//        }
+//
+//        List<Product> lis = Arrays.stream(prods.getBody())
+//                                .map(prod-> convertToProduct(prod))
+//                                .toList();
+//        return lis;
+//
+//    }
 
     @Override
     public Product createProduct(CreateProductDTO product) {

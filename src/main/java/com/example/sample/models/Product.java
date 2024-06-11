@@ -21,7 +21,7 @@ public class Product extends BaseModel{
     private String description;
     private double price;
     private String imageUrl;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "category")
     @JsonBackReference
     private Category category;

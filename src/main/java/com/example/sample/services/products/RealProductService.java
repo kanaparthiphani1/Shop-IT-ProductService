@@ -10,6 +10,9 @@ import com.example.sample.repository.ProductRepository;
 import com.example.sample.services.category.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,8 +37,9 @@ public class RealProductService implements ProductService{
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public Page<Product> getAllProducts(int pageNum,int pageSize, String dir) {
+        return productRepository.findAll(PageRequest.of(pageNum,pageSize,dir.equalsIgnoreCase("asc")?Sort.by("price").ascending() :
+                Sort.by("price").descending()));
     }
 
     @Override

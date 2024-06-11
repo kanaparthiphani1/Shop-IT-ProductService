@@ -5,6 +5,7 @@ import com.example.sample.exception.ProductNotFoundException;
 import com.example.sample.models.Product;
 import com.example.sample.projections.ProductWithCategory;
 import com.example.sample.services.products.ProductService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,8 +33,10 @@ public class ProductController {
     }
 
     @GetMapping()
-    public List<Product> getProducts() {
-        return this.productService.getAllProducts();
+    public Page<Product> getProducts(@RequestParam("pageNumber") int pageNumber,
+                                     @RequestParam("pageSize") int pageSize,
+                                     @RequestParam("sortDir") String sortDir) {
+        return this.productService.getAllProducts(pageNumber, pageSize, sortDir);
     }
 
     @PutMapping()
