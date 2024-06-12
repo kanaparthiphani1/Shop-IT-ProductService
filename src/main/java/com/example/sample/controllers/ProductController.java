@@ -1,6 +1,7 @@
 package com.example.sample.controllers;
 
 import com.example.sample.DTO.CreateProductDTO;
+import com.example.sample.DTO.ProductWithCategoryDTO;
 import com.example.sample.exception.ProductNotFoundException;
 import com.example.sample.models.Product;
 import com.example.sample.projections.ProductWithCategory;
@@ -28,8 +29,14 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ProductWithCategory getProductById(@PathVariable("id") Long id) {
+    public ProductWithCategoryDTO getProductById(@PathVariable("id") Long id) {
+        try{
+            System.out.println("Id : "+id);
         return this.productService.getProductById(id);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
     @GetMapping()

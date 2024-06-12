@@ -2,6 +2,7 @@ package com.example.sample.services.products;
 
 import com.example.sample.DTO.CreateProductDTO;
 import com.example.sample.DTO.FakeStoreProductDTO;
+import com.example.sample.DTO.ProductWithCategoryDTO;
 import com.example.sample.exception.ProductNotFoundException;
 import com.example.sample.models.Category;
 import com.example.sample.models.Product;
@@ -39,7 +40,7 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public ProductWithCategory getProductById(Long id) {
+    public ProductWithCategoryDTO getProductById(Long id) {
         ResponseEntity<FakeStoreProductDTO> prod = this.rt.getForEntity(
                 "https://fakestoreapi.com/products/"+id, FakeStoreProductDTO.class);
 

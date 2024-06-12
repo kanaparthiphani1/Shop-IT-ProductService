@@ -1,6 +1,7 @@
 package com.example.sample.services.products;
 
 import com.example.sample.DTO.CreateProductDTO;
+import com.example.sample.DTO.ProductWithCategoryDTO;
 import com.example.sample.exception.ProductNotFoundException;
 import com.example.sample.models.Category;
 import com.example.sample.models.Product;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,16 +26,34 @@ public class RealProductService implements ProductService{
 
     private ProductRepository productRepository;
     private CategoryService categoryService;
+    private RedisTemplate<String,Object> redisTemplate;
 
     @Autowired
-    public RealProductService(ProductRepository productRepository,CategoryService categoryService) {
+    public RealProductService(ProductRepository productRepository,CategoryService categoryService,RedisTemplate<String,Object> redisTemplate) {
         this.productRepository = productRepository;
         this.categoryService = categoryService;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
-    public ProductWithCategory getProductById(Long id) {
-        return productRepository.getProductWithCategoryById(id);
+    public ProductWithCategoryDTO getProductById(Long id) throws ProductNotFoundException {
+        System.out.println("Camer here");
+        ProductWithCategoryDTO redisProd = (ProductWithCategoryDTO) redisTemplate.opsForHash().get("PRODUCT","PRODUCT_"+id);
+        System.out.println("Came here 2");
+        if (redisProd!=null){
+            return redisProd;
+        }
+        System.out.println("Came here 4");
+
+        ProductWithCategory prodProj =  productRepository.getProductWithCategoryById(id);
+        if(prodProj==null){
+//            return new ();
+            throw new ProductNotFoundException("Product Not found",id);
+        }
+        ProductWithCategoryDTO prod = new ProductWithCategoryDTO(prodProj);
+        System.out.println("Prod : "+prod.toString());
+        redisTemplate.opsForHash().put("PRODUCT","PRODUCT_"+id,prod);
+        return prod;
     }
 
     @Override

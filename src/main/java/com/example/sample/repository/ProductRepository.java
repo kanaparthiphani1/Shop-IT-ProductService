@@ -1,5 +1,6 @@
 package com.example.sample.repository;
 
+import com.example.sample.DTO.ProductWithCategoryDTO;
 import com.example.sample.models.Product;
 import com.example.sample.projections.ProductWithCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
