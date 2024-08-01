@@ -15,4 +15,6 @@ public interface ProductService {
     Page<Product> getAllProducts(int pageNum,int pageSize, String dir);
     Product createProduct(CreateProductDTO product);
     Product replaceProduct(Product product) throws ProductNotFoundException;
+    Page<Product> getProductsByCategory(int pageNum, int pageSize, String dir, Long categoryId);
+    boolean deleteProduct(Long id);
 }

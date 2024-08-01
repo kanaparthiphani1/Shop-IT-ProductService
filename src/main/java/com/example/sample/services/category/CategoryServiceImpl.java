@@ -4,6 +4,9 @@ import com.example.sample.DTO.CategoryProdDTO;
 import com.example.sample.models.Category;
 import com.example.sample.models.Product;
 import com.example.sample.repository.CategoryRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +19,12 @@ public class CategoryServiceImpl implements CategoryService{
 
     public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
+    }
+
+    @Override
+    public Page<Category> getCategories(int pageNumber, int pageSize, String order) {
+        return categoryRepository.findAll(PageRequest.of(pageNumber,pageSize,order.equalsIgnoreCase("asc")? Sort.by("title").ascending() :
+                Sort.by("title").descending()));
     }
 
     @Override

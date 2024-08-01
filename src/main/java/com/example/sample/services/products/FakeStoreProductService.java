@@ -79,4 +79,14 @@ public class FakeStoreProductService implements ProductService{
     public Product replaceProduct(Product product) throws ProductNotFoundException {
         return null;
     }
+
+    @Override
+    public Page<Product> getProductsByCategory(int pageNum, int pageSize, String dir, Long categoryId) {
+        return null;
+    }
+
+    @Override
+    public boolean deleteProduct(Long id) {
+        return false;
+    }
 }

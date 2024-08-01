@@ -3,10 +3,8 @@ package com.example.sample.controllers;
 import com.example.sample.DTO.CategoryProdDTO;
 import com.example.sample.models.Category;
 import com.example.sample.services.category.CategoryService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +18,9 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    public List<Category> getAllCategories() {
-        return new ArrayList<>();
+    @GetMapping()
+    public Page<Category> getAllCategories(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize, @RequestParam("order") String order) {
+        return categoryService.getCategories(pageNumber,pageSize,order);
     }
 
     @GetMapping("/single/{id}")

@@ -81,4 +81,25 @@ public class RealProductService implements ProductService{
 
         return productRepository.save(product);
     }
+
+    @Override
+    public Page<Product> getProductsByCategory(int pageNum, int pageSize, String dir, Long categoryId) {
+        Category category = categoryService.getCategoryById(categoryId);
+        Optional<Page<Product>> products = productRepository.findProductsByCategory(category,PageRequest.of(pageNum,pageSize,dir.equalsIgnoreCase("asc")?Sort.by("price").ascending() :
+                Sort.by("price").descending()));
+
+        return products.orElse(null);
+
+    }
+
+    @Override
+    public boolean deleteProduct(Long id) {
+        try{
+        productRepository.deleteById(id);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
 }
