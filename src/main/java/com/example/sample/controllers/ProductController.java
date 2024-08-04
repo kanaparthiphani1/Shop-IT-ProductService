@@ -18,9 +18,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Tag(
         name = "CRUD REST APIs for Ptoducts in ShopIT",
@@ -129,7 +135,10 @@ public class ProductController {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping()
-    public ResponseEntity<Product> createProduct(@RequestBody CreateProductDTO product) {
+    public ResponseEntity<Product> createProduct(@RequestBody CreateProductDTO product, Principal principal, Authentication auth, @AuthenticationPrincipal Jwt jwt) {
+        System.out.println(principal.getName());
+        Long userId = (Long) jwt.getClaims().get("userId");
+        System.out.println(Optional.ofNullable(jwt.getClaim("userId")));
         Product product1 = productService.createProduct(product);
         return ResponseEntity.ok(product1);
     }

@@ -1,6 +1,7 @@
 package com.example.sample.services.category;
 
 import com.example.sample.DTO.CategoryProdDTO;
+import com.example.sample.DTO.CreateCategory;
 import com.example.sample.models.Category;
 import com.example.sample.models.Product;
 import com.example.sample.repository.CategoryRepository;
@@ -46,5 +47,12 @@ public class CategoryServiceImpl implements CategoryService{
 //        System.out.println("Products : "+products.t);
         prodDTO.setProducts(products);
         return prodDTO;
+    }
+
+    @Override
+    public Category createCategory(CreateCategory createCategory) {
+        Category category = new Category();
+        category.setTitle(createCategory.getTitle());
+        return categoryRepository.save(category);
     }
 }

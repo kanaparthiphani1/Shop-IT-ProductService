@@ -58,8 +58,11 @@ public class RealProductService implements ProductService{
 
     @Override
     public Page<Product> getAllProducts(int pageNum,int pageSize, String dir) {
-        return productRepository.findAll(PageRequest.of(pageNum,pageSize,dir.equalsIgnoreCase("asc")?Sort.by("price").ascending() :
-                Sort.by("price").descending()));
+        return productRepository.findAll(PageRequest.of(pageNum,
+                pageSize,
+                dir.equalsIgnoreCase("asc")?
+                        Sort.by("price").ascending() :
+                        Sort.by("price").descending()));
     }
 
     @Override
