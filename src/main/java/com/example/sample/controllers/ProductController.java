@@ -7,6 +7,7 @@ import com.example.sample.exception.ProductNotFoundException;
 import com.example.sample.models.Product;
 import com.example.sample.projections.ProductWithCategory;
 import com.example.sample.services.products.ProductService;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
